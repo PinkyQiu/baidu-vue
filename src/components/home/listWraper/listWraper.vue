@@ -1,55 +1,64 @@
 <template>
   <div>
-    <div v-show="showMenu" class="nav-wrapper" ref="navWrapper">
-    	<ul class="nav-list" ref="navList">
-    		<li 
-    			class="list list-item" 
-    			v-for="item in categoryList"
-    			@click="getList(item.value)"
-    			:class="{'active': currentCategoty === item.value}"
-    		>
-    		  {{item.name}}
-    		</li>
-    	</ul>
-    </div>
-    <div class="content-wrapper">
-    	<ul class="content-list" v-if="list">
-    		<li class="list-wrapper" v-for="item in list">
-    			<div class="list-item" v-show="item.type==0">
-    				<h2 class="title">{{item.title}}</h2>
-    				<a href="#" class="big">
-    					<img class="big-picture" :src="item.picture" alt="图片">
-    				</a>
-    				<span class="user">{{item.user}}</span>
-    				<span class="time">{{item.time}}</span>
-    			</div>
-    			<div class="list-item" v-show="item.type==1">
-    				<h2 class="title">{{item.title}}</h2>
-    				<div class="small-list">
-    					<a href="#" class="small" v-for="picture in item.picture">
-	    					<img class="small-picture" :src="picture" alt="图片">
-	    				</a>
-    				</div>
-    				<span class="user">{{item.user}}</span>
-    				<span class="time">{{item.time}}</span>
-    			</div>
-    			<div class="list-item" v-show="item.type==2">
-    				<h2 class="title">{{item.title}}</h2>
-    				<a href="#" class="big">
-    					<img class="big-picture" :src="item.picture" alt="图片">
-    					<i :class="item.icon" class="iconfont"></i>
-    				</a>
-    				<span class="user">{{item.user}}</span>
-    				<span class="time">{{item.time}}</span>
-    			</div>
-    		</li>
-    	</ul>
-    </div>
+	  <div class="main-wrapper">
+	  	<div v-show="showMenu" class="nav-wrapper" ref="navWrapper">
+	    	<ul class="nav-list" ref="navList" v-if="categoryList">
+	    		<li 
+	    			class="list list-item" 
+	    			v-for="item in categoryList"
+	    			@click="getList(item.value)"
+	    			:class="{'active': currentCategoty === item.value}"
+	    		>
+	    		  {{item.name}}
+	    		</li>
+	    	</ul>
+	    </div>
+	    <div class="content-wrapper">
+	    	<ul class="content-list" v-if="list">
+	    		<li class="list-wrapper" v-for="item in list">
+		    		<router-link :to="{ 
+		    			path: `detail/${item.id}`, 
+		    			query: {type: currentCategoty}, 
+		    			params: { id: item.id }
+		    		}">
+		    			<div class="list-item" v-if="item.type==0">
+		    				<h2 class="title">{{item.title}}</h2>
+		    				<a href="#" class="big">
+		    					<img class="big-picture" :src="item.picture" alt="图片">
+		    				</a>
+		    				<span class="user">{{item.user}}</span>
+		    				<span class="time">{{item.time}}</span>
+		    			</div>
+		    			<div class="list-item" v-if="item.type==1">
+		    				<h2 class="title">{{item.title}}</h2>
+		    				<div class="small-list">
+		    					<a href="#" class="small" v-for="picture in item.picture">
+			    					<img class="small-picture" :src="picture" alt="图片">
+			    				</a>
+		    				</div>
+		    				<span class="user">{{item.user}}</span>
+		    				<span class="time">{{item.time}}</span>
+		    			</div>
+		    			<div class="list-item" v-if="item.type==2">
+		    				<h2 class="title">{{item.title}}</h2>
+		    				<a href="#" class="big">
+		    					<img class="big-picture" :src="item.picture" alt="图片">
+		    					<i :class="item.icon" class="iconfont"></i>
+		    				</a>
+		    				<span class="user">{{item.user}}</span>
+		    				<span class="time">{{item.time}}</span>
+		    			</div>
+		    		</router-link>
+	    		</li>
+	    	</ul>
+	    </div>
+	  </div>    
   </div>
 </template>
 
 <script>
 import BScroll from 'better-scroll'
+// import item from '../item/item'
 var ERROR_OK=0
 export default {
 	data() {
@@ -57,12 +66,17 @@ export default {
 			list:[],
 			currentCategoty: '',
 			categoryList: [],
-			showMenu: false,
+			showMenu: false
 		}
 	},
 	created() {
 		this.getCategoryList()
-		this.bindScroll()
+		this.bindScroll();
+	},
+	watch:{
+		'showMenu'() {
+      this._initNavs();
+		}
 	},
 	methods:{
 		_initNavs() {

@@ -25,7 +25,8 @@ var app = express()
 var appdata=require('../data.json');
 var header=appdata.header;
 var list=appdata.list;
-var category = appdata.category
+var category = appdata.category;
+var shares = appdata.shares;
 var airRoutes=express.Router();
 airRoutes.get('/header',function(req,res) {
   res.json({
@@ -46,6 +47,26 @@ airRoutes.get('/list',function(req,res) {
   res.json({
     errno:0,
     data:list[category]
+  })
+});
+
+airRoutes.get('/detail/:id',function(req,res) {
+  var id = req.params.id
+  var category = req.query.category
+  const categoryList = list[category]
+  const detail = categoryList.filter(function(item){
+    return item.id == id
+  })[0]
+  res.json({
+    errno:0,
+    data: detail
+  })
+});
+
+airRoutes.get('/shares',function(req,res) {
+  res.json({
+    errno:0,
+    data:shares
   })
 });
 
