@@ -103,12 +103,7 @@ export default {
 		},
 		show() {
 			this.isShow=true;
-			this.$http.get('/api/shares').then((response)=>{
-					response=response.body;
-					if (response.errno==ERROR_OK) {
-						this.shares = response.data
-					};
-			});
+			this.shares = data.shares
 		 this.$refs.itemWrap.style.overflow = 'hidden';
 		},
 		hide() {
