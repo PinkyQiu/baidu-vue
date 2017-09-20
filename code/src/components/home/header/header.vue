@@ -46,6 +46,7 @@
 
 <script>
 import BScroll from 'better-scroll'
+import data from '../../../../data.json'
 var ERROR_OK=0
 export default {
 	data() {
@@ -56,15 +57,10 @@ export default {
 		}
 	},
 	created() {
-		this.$http.get('/api/header').then((response)=>{
-			response=response.body;
-			if (response.errno==ERROR_OK) {
-				this.header=response.data;
-        this.$nextTick(()=>{
-          this._initNavs();
-        })
-			};
-		})
+		this.header=data.header;
+    this.$nextTick(()=>{
+      this._initNavs();
+    })
 	},
 	methods:{
 		_initNavs() {

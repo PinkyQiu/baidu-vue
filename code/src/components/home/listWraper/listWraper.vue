@@ -58,11 +58,13 @@
 
 <script>
 import BScroll from 'better-scroll'
+import data from '../../../../data.json'
 var ERROR_OK=0
 export default {
 	data() {
 		return {
 			list:[],
+			init: false,
 			currentCategoty: '',
 			categoryList: [],
 			showMenu: false
@@ -71,9 +73,6 @@ export default {
 	created() {
 		this.getCategoryList()
 		this.bindScroll();
-		this.$nextTick(()=>{
-			this._initNavs();
-		})
 	},
 	watch:{
 		'showMenu'() {
@@ -101,29 +100,20 @@ export default {
 		bindScroll() {
 			document.addEventListener('scroll', (e) => {
 				var scrollTop = document.body.scrollTop
+				if(scrollTop >= 210) {
+					!this.init && this._initNavs();
+					this.init = true
+				}
 				this.showMenu = scrollTop>=210
 			}, false)
 		},
 		getCategoryList(){
-			this.$http.get('/api/category').then((response)=>{
-				response=response.body;
-				if (response.errno==ERROR_OK) {
-					this.categoryList=response.data;
-					this.getList(this.categoryList[0].value)
-				};
-			})
+			this.categoryList=data.category;
+			this.getList(this.categoryList[0].value)
 		},
 		getList(category) {
-			this.$http.get('/api/list', {
-				params:{category}
-			}).then((response)=>{
-				response=response.body;
-				if (response.errno==ERROR_OK) {
-					this.list=response.data;
-					this.currentCategoty=category
-					this._initNavs();
-				};
-			})
+			this.list=data.list[category];
+			this.currentCategoty=category
 		}
 	}
 }

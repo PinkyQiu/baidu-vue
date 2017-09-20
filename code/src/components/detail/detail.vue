@@ -77,6 +77,7 @@
 </template>
 
 <script>
+import data from '../../../data.json'
 var ERROR_OK=0
 export default {
 	data() {
@@ -89,13 +90,11 @@ export default {
 	created() {
 		const id = this.$route.params.id
 		const category = this.$route.query.type
-		this.$http.get(`/api/detail/${id}`, {
-			params: {category}
-		}).then((response)=>{
-				response=response.body;
-				if (response.errno==ERROR_OK) {
-					this.detail = response.data
-				};
+		const list = data.list[category]
+		list.forEach(item => {
+			if(item.id == id) {
+				this.detail = item
+			}
 		})
 	},
 	methods: {
