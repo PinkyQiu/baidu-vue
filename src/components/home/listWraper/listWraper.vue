@@ -58,7 +58,6 @@
 
 <script>
 import BScroll from 'better-scroll'
-// import item from '../item/item'
 var ERROR_OK=0
 export default {
 	data() {
@@ -72,6 +71,9 @@ export default {
 	created() {
 		this.getCategoryList()
 		this.bindScroll();
+		this.$nextTick(()=>{
+			this._initNavs();
+		})
 	},
 	watch:{
 		'showMenu'() {

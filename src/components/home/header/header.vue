@@ -60,7 +60,9 @@ export default {
 			response=response.body;
 			if (response.errno==ERROR_OK) {
 				this.header=response.data;
-				this._initNavs();
+        this.$nextTick(()=>{
+          this._initNavs();
+        })
 			};
 		})
 	},
