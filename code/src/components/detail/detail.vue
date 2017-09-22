@@ -96,6 +96,9 @@ export default {
 				this.detail = item
 			}
 		})
+		this.$nextTick(() => {
+			this._delayPicture()
+		})
 	},
 	mounted() {
 		this.bindScroll()
@@ -107,7 +110,7 @@ export default {
 		show() {
 			this.isShow=true;
 			this.shares = data.shares
-		 this.$refs.itemWrap.style.overflow = 'hidden';
+			this.$refs.itemWrap.style.overflow = 'hidden';
 		},
 		hide() {
 			this.isShow=false;
@@ -207,8 +210,10 @@ export default {
 						color:#333
 						line-height:1.5
 					.pic
+						display:block
 						width:100%
 						height:auto
+						min-height:200px
 						margin-top:20px
 			.relative
 				background:#fff
