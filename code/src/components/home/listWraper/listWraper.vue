@@ -24,7 +24,7 @@
 		    			<div class="list-item" v-if="item.type==0">
 		    				<h2 class="title">{{item.title}}</h2>
 		    				<a href="#" class="big">
-		    					<img class="big-picture" :src="item.picture" alt="图片">
+		    					<img class="big-picture" ref="bigPicture"  src="./loading.gif" :xsrc="item.picture" alt="图片">
 		    				</a>
 		    				<span class="user">{{item.user}}</span>
 		    				<span class="time">{{item.time}}</span>
@@ -33,7 +33,7 @@
 		    				<h2 class="title">{{item.title}}</h2>
 		    				<div class="small-list">
 		    					<a href="#" class="small" v-for="picture in item.picture">
-			    					<img class="small-picture" :src="picture" alt="图片">
+			    					<img class="small-picture" ref="bigPicture" src="./loading.gif" :xsrc="picture" alt="图片">
 			    				</a>
 		    				</div>
 		    				<span class="user">{{item.user}}</span>
@@ -42,7 +42,7 @@
 		    			<div class="list-item" v-if="item.type==2">
 		    				<h2 class="title">{{item.title}}</h2>
 		    				<a href="#" class="big">
-		    					<img class="big-picture" :src="item.picture" alt="图片">
+		    					<img class="big-picture" ref="bigPicture" src="./loading.gif" :xsrc="item.picture" alt="图片">
 		    					<i :class="item.icon" class="iconfont"></i>
 		    				</a>
 		    				<span class="user">{{item.user}}</span>
@@ -97,6 +97,25 @@ export default {
 				}
 			});
 		},
+		_offsetTop(element) {
+		  var top = element.offsetTop;
+		  var parent = element.offsetParent;
+		  while (parent != null) {
+		    top += parent.offsetTop;
+		    parent = parent.offsetParent;
+		  }
+		  return top;
+		},
+		_delayPicture() {
+			var scrollTop = document.body.scrollTop;
+			var bigPicture=this.$refs.bigPicture;
+			for (var i = 0; i < bigPicture.length; i++) {
+				let bp=bigPicture[i];
+				if(document.documentElement.clientHeight+scrollTop>=this._offsetTop(bp)) {
+					bp.setAttribute('src',bp.getAttribute('xsrc'))
+				}
+			};	
+		},
 		bindScroll() {
 			document.addEventListener('scroll', (e) => {
 				var scrollTop = document.body.scrollTop
@@ -105,6 +124,7 @@ export default {
 					this.init = true
 				}
 				this.showMenu = scrollTop>=210
+				this._delayPicture()
 			}, false)
 		},
 		getCategoryList(){
@@ -114,6 +134,9 @@ export default {
 		getList(category) {
 			this.list=data.list[category];
 			this.currentCategoty=category
+			this.$nextTick(() => {
+				this._delayPicture()
+			})
 		}
 	}
 }
