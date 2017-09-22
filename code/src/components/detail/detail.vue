@@ -154,13 +154,6 @@ export default {
 
 <style lang="stylus" rel="stylesheet/stylus">
 .item
-	position:fixed
-	top:0
-	left:0
-	width:100%
-	height:100%
-	z-index:500
-	overflow:auto
 	background:#fff
 	.wrap
 		min-height:100%
