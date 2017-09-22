@@ -5,7 +5,7 @@
 	    	<i class="iconfont icon-fanhui" @click="goBack()"></i>
 	    	<i class="iconfont icon-dian" @click="show()"></i>
 	    </div>
-	    <div class="content-wrap">
+	    <div class="content-wrap" ref="contentWrap">
 	      <div class="kind" v-if="detail.type==0||detail.type==1">
 	        <div class="passage-wrap">
 	        	<h1 class="title">{{detail.title}}</h1>
@@ -15,13 +15,13 @@
 		      	</div>
 		      	<div class="passage-pic">
 		      		<p class="passage" v-if="detail.first">{{detail.first}}</p>
-		      		<img :src="detail.p1" alt="图片" class="pic">
+		      		<img :xsrc="detail.p1" ref="P1" alt="图片" class="pic">
 		      		<p class="passage" v-if="detail.second">{{detail.second}}</p>
-		      		<img :src="detail.p2" alt="图片" class="pic">
+		      		<img :xsrc="detail.p2" ref="P2" alt="图片" class="pic">
 		      		<p class="passage" v-if="detail.third">{{detail.third}}</p>
-		      		<img :src="detail.p3" alt="图片" class="pic">
+		      		<img :xsrc="detail.p3" ref="P3" alt="图片" class="pic">
 		      		<p class="passage" v-if="detail.fourth">{{detail.fourth}}</p>
-		      		<img :src="detail.p4" alt="图片" class="pic">
+		      		<img :xsrc="detail.p4" ref="P4" alt="图片" class="pic">
 		      	</div>
 	        </div>
 	      	<div class="relative">
@@ -34,7 +34,7 @@
 	      <div class="kind" v-if="detail.type==2">
 	        <div class="video-wrapper">
 	          <div class="video">
-	          	<img :src="detail.picture" alt="图片">
+	          	<img :xsrc="detail.picture" ref="bigPicture" alt="图片">
 	        	  <i class="iconfont icon-16"></i>
 	        	  <span class="minute">{{detail.minute}}</span>
 	          </div>
@@ -95,8 +95,14 @@ export default {
 				response=response.body;
 				if (response.errno==ERROR_OK) {
 					this.detail = response.data
+					this.$nextTick(() =>{
+						this._delayPicture()
+					})
 				};
 		})
+	},
+	mounted() {
+		this.bindScroll()
 	},
 	methods: {
 		goBack() {
@@ -115,6 +121,38 @@ export default {
 		hide() {
 			this.isShow=false;
 			this.$refs.itemWrap.style.overflow = 'auto';
+		},
+		_offsetTop(element) {
+		  var top = element.offsetTop;
+		  var parent = element.offsetParent;
+		  while (parent != null) {
+		    top += parent.offsetTop;
+		    parent = parent.offsetParent;
+		  }
+		  return top;
+		},
+		_delayPicture() {
+			var scrollTop = document.body.scrollTop;
+			let bigPicture=this.$refs.bigPicture;
+			let P1=this.$refs.P1;
+			let P2=this.$refs.P2;
+			let P3=this.$refs.P3;
+			let P4=this.$refs.P4;
+			var arr=[];
+			arr.push(P1,P2,P3,P4,bigPicture)
+			arr = arr.filter((img) => !!img);
+			for (var i = 0; i < arr.length; i++) {
+				let bp=arr[i];
+				if(document.documentElement.clientHeight+scrollTop>=this._offsetTop(bp)) {
+					bp.setAttribute('src',bp.getAttribute('xsrc'))
+					bp.setAttribute('height','auto')
+				}
+			};	
+		},
+		bindScroll() {
+			window.addEventListener('scroll', (e) => {
+			  this._delayPicture()			
+			}, false);
 		}
 	}
 }
@@ -122,13 +160,6 @@ export default {
 
 <style lang="stylus" rel="stylesheet/stylus">
 .item
-	position:fixed
-	top:0
-	left:0
-	width:100%
-	height:100%
-	z-index:500
-	overflow:auto
 	background:#fff
 	.wrap
 		min-height:100%
@@ -178,6 +209,8 @@ export default {
 						color:#333
 						line-height:1.5
 					.pic
+						display:block
+						min-height:200px
 						width:100%
 						height:auto
 						margin-top:20px
@@ -211,7 +244,7 @@ export default {
 						border-bottom:1px solid #f0f0f0
 			.video-wrapper
 				background:#f5f5f5
-				padding-bottom:10px
+				padding:44px 0 10px 0
 				.video
 					font-size:0
 					position:relative
