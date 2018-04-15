@@ -107,7 +107,7 @@ export default {
 		  return top;
 		},
 		_delayPicture() {
-			var scrollTop = document.body.scrollTop;
+			var scrollTop = document.documentElement.scrollTop;
 			var bigPicture=this.$refs.bigPicture;
 			for (var i = 0; i < bigPicture.length; i++) {
 				let bp=bigPicture[i];
@@ -118,7 +118,8 @@ export default {
 		},
 		bindScroll() {
 			document.addEventListener('scroll', (e) => {
-				var scrollTop = document.body.scrollTop
+				console.log(1)
+				var scrollTop = document.documentElement.scrollTop
 				if(scrollTop >= 210) {
 					!this.init && this._initNavs();
 					this.init = true

@@ -15,13 +15,13 @@
 		      	</div>
 		      	<div class="passage-pic">
 		      		<p class="passage" v-if="detail.first">{{detail.first}}</p>
-		      		<img :xsrc="detail.p1" ref="P1" alt="图片" class="pic">
+		      		<img :src="detail.p1" ref="P1" alt="图片" class="pic">
 		      		<p class="passage" v-if="detail.second">{{detail.second}}</p>
-		      		<img :xsrc="detail.p2" ref="P2" alt="图片" class="pic">
+		      		<img :src="detail.p2" ref="P2" alt="图片" class="pic">
 		      		<p class="passage" v-if="detail.third">{{detail.third}}</p>
-		      		<img :xsrc="detail.p3" ref="P3" alt="图片" class="pic">
+		      		<img src.lazy="detail.p3" ref="P3" alt="图片" class="pic">
 		      		<p class="passage" v-if="detail.fourth">{{detail.fourth}}</p>
-		      		<img :xsrc="detail.p4" ref="P4" alt="图片" class="pic">
+		      		<img :src="detail.p4" ref="P4" alt="图片" class="pic">
 		      	</div>
 	        </div>
 	      	<div class="relative">
