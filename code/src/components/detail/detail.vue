@@ -15,11 +15,11 @@
 		      	</div>
 		      	<div class="passage-pic">
 		      		<p class="passage" v-if="detail.first">{{detail.first}}</p>
-		      		<img :src="detail.p1" ref="P1" alt="图片" class="pic">
+		      		<img :src="detail.p1" ref="P2" alt="图片" class="pic">
 		      		<p class="passage" v-if="detail.second">{{detail.second}}</p>
 		      		<img :src="detail.p2" ref="P2" alt="图片" class="pic">
 		      		<p class="passage" v-if="detail.third">{{detail.third}}</p>
-		      		<img src.lazy="detail.p3" ref="P3" alt="图片" class="pic">
+		      		<img :src="detail.p3" ref="P3" alt="图片" class="pic">
 		      		<p class="passage" v-if="detail.fourth">{{detail.fourth}}</p>
 		      		<img :src="detail.p4" ref="P4" alt="图片" class="pic">
 		      	</div>
@@ -173,6 +173,7 @@ export default {
 				float:left
 				font-size:20px
 				color:#333
+				curson:pointer
 			.icon-dian	
 				float:right		
 				font-size:20px
@@ -293,7 +294,7 @@ export default {
 						width:96px
 						img
 							width:100%
-							height:82px
+							height:100%
 						.length
 							display:inline-block
 							width:60px

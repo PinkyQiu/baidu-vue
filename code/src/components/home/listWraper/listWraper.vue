@@ -118,7 +118,6 @@ export default {
 		},
 		bindScroll() {
 			document.addEventListener('scroll', (e) => {
-				console.log(1)
 				var scrollTop = document.documentElement.scrollTop
 				if(scrollTop >= 210) {
 					!this.init && this._initNavs();
